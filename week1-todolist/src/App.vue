@@ -1,21 +1,56 @@
 <template>
-  <div id="app">
-    <header></header>
-    <main></main>
-  </div>
+    <div id="app">
+        <header>
+            <div class="container height-100">
+                <todo-filters v-model="selectedFilter" :filters="filters"></todo-filters>
+            </div>
+        </header>
+
+        <main>
+            <div class="container">
+            </div>
+        </main>
+    </div>
 </template>
 
 <script>
-export default {
-  name: 'app'
-}
+    import TodoFilters from './components/TodoFilters'
+
+    export default {
+        name: 'app',
+
+        components: {
+            TodoFilters
+        },
+
+        data () {
+            return {
+                filters: [
+                    {
+                        text: 'My Tasks',
+                        value: 'all'
+                    },
+                    {
+                        text: 'In Progress',
+                        value: 'progress'
+                    },
+                    {
+                        text: 'Completed',
+                        value: 'completed'
+                    }
+                ],
+
+                selectedFilter: 'all'
+            }
+        }
+    }
 </script>
 
 <style lang="stylus">
-  @import 'stylus/_variables.styl'
+    @import 'stylus/_variables.styl'
 
-  header
-    background-color: $blue
-    width: 100%
-    height: 76px
+    header
+        background-color: $blue
+        width: 100%
+        height: 76px
 </style>

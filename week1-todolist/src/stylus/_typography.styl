@@ -1,0 +1,36 @@
+h1
+  line-height 28px
+  font-size: 24px
+  font-weight: 500
+  color: $black
+
+h2
+  line-height: 24px
+  font-size: 20px
+  font-weight: 500
+  color: $black
+
+p
+  line-height: 24px
+  font-size: 16px
+  font-weight: 400
+  color: $black
+
+.text
+  &--title
+    @extend h1
+
+  &--subtitle
+    @extend h2
+
+  &--paragraph
+    @extend p
+
+  &--remark,
+  &--placeholder
+    @extend p
+    color: $grey
+
+  &--status
+    @extend h1
+    color: $grey-lighten-1

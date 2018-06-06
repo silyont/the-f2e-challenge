@@ -8,6 +8,8 @@
 
         <main>
             <div class="container">
+                <div class="todo--item">
+                </div>
             </div>
         </main>
     </div>
@@ -53,4 +55,7 @@
         background-color: $blue
         width: 100%
         height: 76px
+
+    main
+        background-color: $grey-lighten-2
 </style>

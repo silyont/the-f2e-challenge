@@ -13,13 +13,15 @@
                     <span class="text--title placeholder">Add Task</span>
                 </div>
 
-                <todo-item v-for="(todo, index) in filteredTodoList"
-                           :key="todo.id"
-                           :todo="todo"
-                           @toggle-pin="toggleTodoPin(todo)"
-                           @toggle-complete="toggleComplete(todo)"
-                           @remove="removeTodo(index)"
-                ></todo-item>
+                <draggable :list="todos" :move="checkMove" @start="onStart" @end="onEnd">
+                    <todo-item v-for="todo in filteredTodoList"
+                               :key="todo.id"
+                               :todo="todo"
+                               @toggle-pin="toggleTodoPin(todo)"
+                               @toggle-complete="toggleComplete(todo)"
+                               @remove="removeTodo(todo)"
+                    ></todo-item>
+                </draggable>
 
                 <div class="todo--status text--status">{{ numberOfProgressingTask }} tasks left.</div>
             </div>
@@ -30,13 +32,15 @@
 <script>
     import TodoFilters from './components/TodoFilters'
     import TodoItem from './components/TodoItem'
+    import draggable from 'vuedraggable'
 
     export default {
         name: 'app',
 
         components: {
             TodoFilters,
-            TodoItem
+            TodoItem,
+            draggable
         },
 
         data () {
@@ -70,6 +74,18 @@
                         title: 'Wow',
                         completed: true,
                         pin: false
+                    },
+                    {
+                        id: 3,
+                        title: '124215',
+                        completed: true,
+                        pin: false
+                    },
+                    {
+                        id: 4,
+                        title: 'asgagsasg',
+                        completed: true,
+                        pin: false
                     }
                 ]
             }
@@ -83,8 +99,6 @@
             filteredTodoList () {
                 return this.todos.filter(todo => {
                     return this.selectedFilter === 'all' ? true : this.selectedFilter === 'completed' ? todo.completed : !todo.completed
-                }).sort((a, b) => {
-                    return a.pin === b.pin ? 0 : a.pin ? -1 : 1
                 })
             }
         },
@@ -92,14 +106,33 @@
         methods: {
             toggleTodoPin (todo) {
                 todo.pin = !todo.pin
+
+                this.todos = this.todos.sort((a, b) => {
+                    return a.pin === b.pin ? 0 : a.pin ? -1 : 1
+                })
             },
 
             toggleComplete (todo) {
                 todo.completed = !todo.completed
             },
 
-            removeTodo (index) {
-                this.todos.splice(index, 1)
+            removeTodo (target) {
+                this.todos.splice(this.todos.findIndex(todo => todo.id === target.id), 1)
+            },
+
+            checkMove ({ draggedContext, relatedContext }) {
+                const relatedElement = relatedContext.element
+                const draggedElement = draggedContext.element
+
+                return relatedElement && draggedElement.pin === relatedElement.pin
+            },
+
+            onStart ({ item }) {
+                item.classList.add('hide')
+            },
+
+            onEnd ({ item }) {
+                item.classList.remove('hide')
             }
         }
     }
@@ -107,6 +140,9 @@
 
 <style lang="stylus">
     @import 'stylus/_variables.styl'
+
+    .hide
+        opacity: 0
 
     header
         background-color: $blue

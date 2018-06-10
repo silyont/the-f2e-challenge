@@ -1,5 +1,5 @@
 <template>
-    <label class="checkbox d-flex align-items-center justify-content-center"
+    <label class="checkbox d-flex align-items-center justify-content-center flex-not-shrink"
          :class="{'checked': checked}"
          @click.stop.prevent="$emit('check')"
     >
